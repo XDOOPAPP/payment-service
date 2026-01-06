@@ -16,6 +16,12 @@ class PaymentController {
     });
     res.json(result);
   };
+
+  // [GET] /api/v1/payments/vnpay/ipn
+  ipn = async (req, res) => {
+    await this.paymentService.handleIPN(req.query);
+    res.json({ message: "OK" });
+  };
 };
 
 module.exports = PaymentController;

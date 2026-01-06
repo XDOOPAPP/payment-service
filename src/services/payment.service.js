@@ -1,6 +1,7 @@
 const paymentRepo = require("../repositories/payment.repository");
 const planRepo = require("../repositories/paymentPlan.repository");
 const AppError = require("../utils/appError");
+const STATUS = require("../constants/payment-status")
 
 class PaymentService {
   constructor(eventBus, vnpayGateway) {
@@ -30,6 +31,25 @@ class PaymentService {
     });
 
     return { paymentRef, paymentUrl };
+  }
+
+  async handleIPN(query) {
+    const verified = this.vnpay.verifyIPN(query);
+    if (!verified.isSuccess) return;
+
+    const paymentRef = verified.orderId;
+
+    const payment = await paymentRepo.updateStatus(
+      paymentRef,
+      verified.isSuccess ? STATUS.SUCCESS : STATUS.FAILED
+    );
+
+    if (payment.status === STATUS.SUCCESS) {
+      await this.eventBus.publish("PAYMENT_SUCCESS", {
+        userId: payment.userId,
+        paymentRef
+      });
+    }
   }
 }
 

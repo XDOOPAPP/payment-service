@@ -10,6 +10,8 @@ module.exports = (app) => {
     
   router.post("/", asyncHandler(controller.create));
 
+  router.get("/vnpay/ipn", asyncHandler(controller.ipn));
+
   router.get("/health", (req, res) => {
     res.status(200).json({
       status: "ok",
