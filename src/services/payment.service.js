@@ -7,6 +7,7 @@ class PaymentService {
   constructor(eventBus, vnpayGateway) {
     this.eventBus = eventBus;
     this.vnpay = vnpayGateway;
+    this._subscribePlanEvents()
   }
 
 
@@ -56,6 +57,23 @@ class PaymentService {
     const payment = await paymentRepo.findByRef(paymentRef);
     if (!payment) throw new AppError("Payment not found", 404);
     return payment;
+  }
+
+
+ // ================= PRIVATE METHODS =================
+
+  _subscribePlanEvents() {
+    if (!this.eventBus) return;
+
+    // PLAN_CREATED
+    this.eventBus.subscribe("PLAN_CREATED", async (payload) => {
+      await this.planRepo.upsertFromEvent(payload);
+    });
+
+    // PLAN_UPDATED
+    this.eventBus.subscribe("PLAN_UPDATED", async (payload) => {
+      await this.planRepo.upsertFromEvent(payload);
+    });
   }
 }
 
