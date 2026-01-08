@@ -10,8 +10,8 @@ class PaymentController {
   // [POST] /api/v1/payments
   create = async (req, res) => {
     const result = await this.paymentService.createPayment({
-      subscriptionId: req.subscriptionId,
-      planId: req.planId,
+      subscriptionId: req.body.subscriptionId,
+      planId: req.body.planId,
       ipAddr: req.ip
     });
     res.json(result);

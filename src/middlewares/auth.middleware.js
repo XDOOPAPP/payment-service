@@ -2,24 +2,29 @@ const jwt = require("jsonwebtoken");
 const AppError = require("../utils/appError");
 
 module.exports = (req, res, next) => {
+
+  const userIdFromGateway = req.headers["x-user-id"];
+
+  if (!userIdFromGateway) {
+    throw new AppError(
+      "Unauthorized - Request must come from API Gateway",
+      401
+    );
+  }
+
   const authHeader = req.headers.authorization;
+  let decoded = null;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new AppError("Unauthorized - No token provided", 401);
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    decoded = jwt.decode(token);
   }
 
-  const token = authHeader.split(" ")[1];
+  req.user = {
+    userId: userIdFromGateway,
+    role: decoded?.role,
+    email: decoded?.email,
+  };
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    req.user = {
-      userId: decoded.userId,
-      role: decoded.role
-    };
-
-    next();
-  } catch (error) {
-    throw new AppError("Unauthorized - Invalid or expired token", 401);
-  }
+  next();
 };
