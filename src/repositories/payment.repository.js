@@ -3,8 +3,9 @@ const PaymentRepositoryInterface = require('./paymentInterface.repository');
 const STATUS = require("../constants/payment-status");
 
 class PaymentRepository extends PaymentRepositoryInterface{
-  async createPending({ subscriptionId, planId, paymentRef, amount}) {
+  async createPending({ userId,subscriptionId, planId, paymentRef, amount}) {
     return Payment.create({
+      userId,
       subscriptionId,
       planId,
       paymentRef,

@@ -11,13 +11,14 @@ class PaymentService {
   }
 
 
-  async createPayment({subscriptionId, planId, ipAddr }) {
+  async createPayment({ userId, subscriptionId, planId, ipAddr }) {
     const plan = await planRepo.findByPlanId(planId);
     if (!plan) throw new AppError("Plan not available for payment", 400);
 
     const paymentRef = `PAY_${Date.now()}`;
 
     await paymentRepo.createPending({
+      userId,
       subscriptionId,
       planId,
       amount: plan.price,
@@ -47,6 +48,13 @@ class PaymentService {
 
     if (payment.status === STATUS.SUCCESS) {
       await this.eventBus.publish("PAYMENT_SUCCESS", {
+        userId: payment.userId,
+        paymentRef
+      });
+    }
+
+    if (payment.status === STATUS.FAILED) {
+      await this.eventBus.publish("PAYMENT_FAILED", {
         userId: payment.userId,
         paymentRef
       });

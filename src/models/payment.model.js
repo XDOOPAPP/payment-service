@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema(
   {
+    userId: { 
+      type: mongoose.Types.ObjectId,
+      required: true,
+      index: true
+    },
     subscriptionId: {
       type: mongoose.Types.ObjectId,
       required: true,
