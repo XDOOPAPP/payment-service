@@ -1,3 +1,6 @@
+# Lưu ý
+Chỉ khi ứng dụng được deloy lên một môi trường có hosting cụ thể thì mới cần cấu hình các thông tin môi trường trong file .env.(chỉ có thể hoạt động khi có hosting)
+
 # Payment Service
 
 Dịch vụ xử lý thanh toán, tích hợp cổng thanh toán VNPay, quản lý giao dịch và thông báo trạng thái thanh toán qua RabbitMQ.
@@ -12,7 +15,7 @@ Dịch vụ xử lý thanh toán, tích hợp cổng thanh toán VNPay, quản l
 - ✅ **Sync Plans** (Lắng nghe sự kiện từ Subscription Service để cập nhật giá)
 
 ### Integration
-- ✅ **RabbitMQ Publisher** (Bắn sự kiện `PAYMENT_SUCCESS` khi thanh toán thành công)
+- ✅ **RabbitMQ Publisher** (Bắn sự kiện `PAYMENT_SUCCESS` khi thanh toán thành công và `PAYMENT_FAILED` khi thanh toán thất bại)
 - ✅ **RabbitMQ Consumer** (Lắng nghe `PLAN_CREATED`, `PLAN_UPDATED`)
 - ✅ **Gateway Auth** (Tin tưởng xác thực từ Gateway)
 
@@ -205,6 +208,19 @@ Khi thanh toán thành công (`SUCCESS`), service publish:
 }
 ```
 
+Khi thanh toán thất bại (`FAILED`), service publish:
+
+**Event:** `PAYMENT_FAILED`
+**Exchange:** `domain_events`
+**Payload:**
+```json
+{
+  "userId": "user_123",
+  "paymentRef": "PAY_170...",
+  "amount": 50000
+}
+```
+
 ### 2. Consumed Events
 
 Service lắng nghe sự kiện thay đổi Plan từ Subscription Service để cập nhật giá:
@@ -224,3 +240,5 @@ Service lắng nghe sự kiện thay đổi Plan từ Subscription Service để
 ## 📄 License
 
 ISC
+
+
