@@ -75,12 +75,12 @@ class PaymentService {
 
     // PLAN_CREATED
     this.eventBus.subscribe("PLAN_CREATED", async (payload) => {
-      await this.planRepo.upsertFromEvent(payload);
+      await planRepo.upsertFromEvent(payload);
     });
 
     // PLAN_UPDATED
     this.eventBus.subscribe("PLAN_UPDATED", async (payload) => {
-      await this.planRepo.upsertFromEvent(payload);
+      await planRepo.upsertFromEvent(payload);
     });
   }
 }
