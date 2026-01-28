@@ -13,10 +13,10 @@ services:
       - RABBITMQ_URL=amqp://fepa:fepa123@fepa-rabbitmq:5672
       - JWT_SECRET=${JWT_SECRET:-fepa-key}
       - JWT_EXPIRATION=${JWT_EXPIRATION:-24h}
-      - VNP_TMN_CODE=${VNP_TMN_CODE}
-      - VNP_HASH_SECRET=${VNP_HASH_SECRET}
-      - VNP_URL=${VNP_URL}
-      - VNP_RETURN_URL=${VNP_RETURN_URL}
+      - VNP_TMN_CODE=${VNP_TMN_CODE:-OEC09T5E}
+      - VNP_HASH_SECRET=${VNP_HASH_SECRET:-154SJ3Q9CJ3SE9SJZJ89OD0ZND7LOPUU}
+      - VNP_URL=${VNP_URL:-https://sandbox.vnpayment.vn}
+      - VNP_RETURN_URL=${VNP_RETURN_URL:-http://76.13.21.84:3000/api/v1/payments/vnpay/ipn}
 
     networks:
       - fepa-network
