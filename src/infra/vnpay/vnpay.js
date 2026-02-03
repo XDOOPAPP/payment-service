@@ -26,7 +26,7 @@ class VNPayGateway {
       vnp_ReturnUrl: this.vnp_ReturnUrl,
       vnp_Locale: "vn",
       vnp_OrderType: ProductCode.Other,
-      vnp_IpnUrl: http://76.13.21.84:3000/api/v1/payments/vnpay/ipn
+      vnp_IpnUrl: "http://76.13.21.84:3000/api/v1/payments/vnpay/ipn"
     });
 
     return paymentUrl;
