@@ -30,6 +30,11 @@ class PaymentController {
     res.json(payment);
   };
 
+  // [GET] /api/v1/payments/vnpay/return
+  vnpayReturn = async (req, res) => {
+    res.send(`<html><body><h1>Payment Successful</h1><p>Your payment has been processed successfully. You can close this window.</p></body></html>`);
+  }
+
 };
 
 module.exports = PaymentController;

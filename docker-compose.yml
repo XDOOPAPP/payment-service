@@ -16,7 +16,7 @@ services:
       - VNP_TMN_CODE=${VNP_TMN_CODE:-ALYMNK6P}
       - VNP_HASH_SECRET=${VNP_HASH_SECRET:-AQ0YGMP4KQ7JKOVJKY0D4LT6L50FC}
       - VNP_URL=${VNP_URL:-https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
-      - VNP_RETURN_URL=${VNP_RETURN_URL:-boopappdfepa.online}
+      - VNP_RETURN_URL=${VNP_RETURN_URL:-http://76.13.21.84:3000/api/v1/payments/vnpay/return}
 
     networks:
       - fepa-network

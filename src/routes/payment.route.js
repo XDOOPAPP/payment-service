@@ -14,6 +14,8 @@ module.exports = (app) => {
 
   router.get("/:ref", auth, asyncHandler(controller.getStatus));
 
+  router.get("/vnpay/return", asyncHandler(controller.vnpayReturn));
+
   router.get("/health", (req, res) => {
     res.status(200).json({
       status: "ok",
